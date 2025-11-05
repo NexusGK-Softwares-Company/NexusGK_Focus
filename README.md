@@ -1,11 +1,11 @@
-# NexusGK Focus - Pomodoro Timer
+# NexusGK Focus - NexFocus Timer
 
-A beautiful and modern Pomodoro timer application inspired by [BeeFocus](https://beefocus.su/pomodoro), built with React, TypeScript, and Tailwind CSS.
+A beautiful and modern focus timer application inspired by [BeeFocus](https://beefocus.su/pomodoro), built with React, TypeScript, and Tailwind CSS.
 
 ## Features
 
 ### Timer & Focus
-- ⏱️ **Smart Pomodoro Timer** - Customizable durations with auto-switching between modes
+- ⏱️ **Smart NexFocus Timer** - Customizable durations with auto-switching between modes
 - 🎯 **Focus Mode** - Distraction-free fullscreen timer view
 - ⚙️ **Customizable Settings** - Adjust timer durations, auto-start behavior, and intervals
 - 🔔 **Smart Notifications** - Desktop notifications and sound alerts when sessions complete
@@ -17,7 +17,7 @@ A beautiful and modern Pomodoro timer application inspired by [BeeFocus](https:/
 
 ### Analytics & Goals
 - 📊 **Analytics Dashboard** - Track daily and total sessions and minutes
-- 🎯 **Daily Goals** - Set and track daily pomodoro goals
+- 🎯 **Daily Goals** - Set and track daily focus session goals
 - 🔥 **Streak Tracking** - Monitor current and longest productivity streaks
 - 📅 **Session History** - View detailed timeline of all completed sessions
 
@@ -66,10 +66,10 @@ The built files will be in the `dist` directory.
 ## Usage
 
 ### Getting Started
-1. **Select a mode**: Choose between Pomodoro, Short Break, or Long Break
+1. **Select a mode**: Choose between NexFocus, Short Break, or Long Break
 2. **Configure settings**: Click the Settings icon to customize timer durations and preferences
-3. **Set daily goals**: Define how many pomodoros you want to complete each day
-4. **Add tasks**: Create tasks with estimated pomodoros to stay organized
+3. **Set daily goals**: Define how many focus sessions you want to complete each day
+4. **Add tasks**: Create tasks with estimated sessions to stay organized
 
 ### During Work Sessions
 1. **Start timer**: Click play or press `Space`/`K`
@@ -101,13 +101,13 @@ Maximize your productivity with these shortcuts:
 | `Shift + ,` | Open settings |
 | `Esc` | Exit focus mode |
 
-## Pomodoro Technique
+## NexFocus Technique
 
-The Pomodoro Technique is a time management method:
+The NexFocus Technique is a time management method based on the Pomodoro Technique:
 
-1. Work for 25 minutes (1 Pomodoro)
+1. Work for 25 minutes (1 Focus Session)
 2. Take a 5-minute break
-3. After 4 Pomodoros, take a longer 15-minute break
+3. After 4 Focus Sessions, take a longer 15-minute break
 
 This app lets you customize these durations in the settings!
 

@@ -51,7 +51,7 @@ export const Goals: React.FC<GoalsProps> = ({
               onChange={(e) => setNewGoal(parseInt(e.target.value) || 1)}
               className="flex-1 px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-primary focus:outline-none"
             />
-            <span>pomodoros/day</span>
+            <span>sessions/day</span>
           </div>
           <button
             onClick={handleSave}
@@ -65,7 +65,7 @@ export const Goals: React.FC<GoalsProps> = ({
           <div className="mb-4">
             <div className="flex justify-between text-sm mb-2">
               <span>
-                {completedToday} / {dailyGoal} pomodoros
+                {completedToday} / {dailyGoal} sessions
               </span>
               <span>{Math.min(100, Math.round(progress))}%</span>
             </div>

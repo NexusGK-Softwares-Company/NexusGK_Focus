@@ -58,7 +58,7 @@ export const TaskList: React.FC<TaskListProps> = ({
             autoFocus
           />
           <div className="flex items-center gap-3">
-            <label className="text-sm">Est. Pomodoros:</label>
+            <label className="text-sm">Est. Sessions:</label>
             <input
               type="number"
               min="1"
@@ -116,7 +116,7 @@ export const TaskList: React.FC<TaskListProps> = ({
                   {task.title}
                 </p>
                 <p className="text-sm text-white/60">
-                  {task.pomodorosCompleted} / {task.pomodorosEstimated} pomodoros
+                  {task.pomodorosCompleted} / {task.pomodorosEstimated} sessions
                 </p>
               </div>
 
