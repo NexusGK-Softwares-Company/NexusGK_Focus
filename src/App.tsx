@@ -60,7 +60,7 @@ function App() {
     if (settings.notificationsEnabled && 'Notification' in window && Notification.permission === 'granted') {
       new Notification('Timer Complete!', {
         body: mode === 'pomodoro' ? 'Time for a break!' : 'Time to focus!',
-        icon: '/vite.svg',
+        icon: 'https://res.cloudinary.com/dzj1fusx1/image/upload/v1762343830/NexFocus_Logo_tntzfw.png',
       });
     }
 
@@ -310,9 +310,16 @@ function App() {
               </button>
             </div>
             
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              NexusGK Focus
-            </h1>
+            <div className="flex items-center justify-center gap-4">
+              <img 
+                src="https://res.cloudinary.com/dzj1fusx1/image/upload/v1762343830/NexFocus_Logo_tntzfw.png" 
+                alt="NexFocus Logo" 
+                className="w-22 h-22 md:w-24 md:h-24 object-contain rounded-full border-2 justify-center items-center"
+              />
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                NexusGK Focus
+              </h1>
+            </div>
             
             <div className="flex gap-2">
               <ThemeSelector
