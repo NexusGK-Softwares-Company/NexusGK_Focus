@@ -1,6 +1,6 @@
 # NexusGK Focus - NexFocus Timer
 
-A beautiful and modern focus timer application inspired by [BeeFocus](https://beefocus.su/pomodoro), built with React, TypeScript, and Tailwind CSS.
+A beautiful and modern focus timer application built with React, TypeScript, and Tailwind CSS. Boost your productivity with 26 stunning themes, keyboard shortcuts, and powerful features.
 
 ## Features
 
@@ -130,10 +130,27 @@ Some themes feature beautiful animated GIFs for an immersive experience!
 - **Tailwind CSS** - Styling
 - **Lucide React** - Icons
 
-## Credits
+## Contributing
 
-Inspired by [BeeFocus](https://beefocus.su/pomodoro)
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Support
+
+If you find this project helpful, please consider:
+- ⭐ Starring the repository
+- 🐛 Reporting bugs
+- 💡 Suggesting new features
+- 📖 Improving documentation
 
 ## License
 
-MIT License
+MIT License - feel free to use this project for personal or commercial purposes.
+
+## Author
+
+Created by **NexusGK** - Building tools for developers and creators.
+
+Connect with us:
+- GitHub: [@nexusgk](https://github.com/nexusgk)
+- Twitter: [@nexusgk](https://twitter.com/nexusgk)
+- LinkedIn: [NexusGK](https://linkedin.com/company/nexusgk)
