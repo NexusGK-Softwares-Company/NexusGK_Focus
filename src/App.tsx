@@ -154,17 +154,6 @@ function App() {
     setMode(modes[(currentIndex + 1) % modes.length]);
   };
 
-  const handleEscapeKey = (e: KeyboardEvent) => {
-    if (e.key === 'Escape' && showFocusMode) {
-      setShowFocusMode(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleEscapeKey);
-    return () => window.removeEventListener('keydown', handleEscapeKey);
-  }, [showFocusMode]);
-
   useKeyboardShortcuts({
     onStartPause: handleStartPause,
     onReset: reset,

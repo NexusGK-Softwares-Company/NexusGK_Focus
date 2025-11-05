@@ -24,24 +24,30 @@ export const FocusMode: React.FC<FocusModeProps> = ({
   onExit,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const isFullscreenActiveRef = useRef(false);
 
   useEffect(() => {
     // Enter fullscreen when component mounts
     const enterFullscreen = async () => {
       try {
-        if (containerRef.current) {
+        if (containerRef.current && !document.fullscreenElement) {
           await containerRef.current.requestFullscreen();
+          isFullscreenActiveRef.current = true;
         }
       } catch (error) {
         console.error('Error entering fullscreen:', error);
       }
     };
 
-    enterFullscreen();
+    // Small delay to ensure DOM is ready
+    const timer = setTimeout(() => {
+      enterFullscreen();
+    }, 100);
 
     // Listen for fullscreen changes (when user presses ESC)
     const handleFullscreenChange = () => {
-      if (!document.fullscreenElement) {
+      // Only exit if we were previously in fullscreen and now we're not
+      if (isFullscreenActiveRef.current && !document.fullscreenElement) {
         onExit();
       }
     };
@@ -50,23 +56,24 @@ export const FocusMode: React.FC<FocusModeProps> = ({
 
     // Cleanup: exit fullscreen when component unmounts
     return () => {
+      clearTimeout(timer);
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
       if (document.fullscreenElement) {
-        document.exitFullscreen();
+        document.exitFullscreen().catch(() => {});
       }
     };
   }, [onExit]);
 
   const handleExit = async () => {
+    isFullscreenActiveRef.current = false;
     try {
       if (document.fullscreenElement) {
         await document.exitFullscreen();
       }
-      onExit();
     } catch (error) {
       console.error('Error exiting fullscreen:', error);
-      onExit();
     }
+    onExit();
   };
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
