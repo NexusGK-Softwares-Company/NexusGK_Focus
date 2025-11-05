@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Task } from '../types';
-import { Plus, Check, Trash2, Edit2, Circle } from 'lucide-react';
+import { Plus, Check, Trash2, Circle } from 'lucide-react';
 
 interface TaskListProps {
   tasks: Task[];
