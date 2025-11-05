@@ -424,7 +424,7 @@ function App() {
                 </p>
                 <div className="flex gap-3">
                   <a 
-                    href="https://github.com/nexusgk" 
+                    href="https://github.com/NexusGK-Softwares-Company/NexusGK_Focus" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-white/60 hover:text-white transition-colors"
@@ -474,21 +474,21 @@ function App() {
               <div>
                 <h4 className="font-semibold mb-3">Resources</h4>
                 <ul className="space-y-2 text-sm text-white/60">
-                  <li><a href="https://github.com/nexusgk/nexusgk-focus" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a></li>
-                  <li><a href="https://github.com/nexusgk/nexusgk-focus/blob/main/README.md" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Documentation</a></li>
-                  <li><a href="https://github.com/nexusgk/nexusgk-focus/issues" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Report Issue</a></li>
-                  <li><a href="https://github.com/nexusgk/nexusgk-focus/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">MIT License</a></li>
+                  <li><a href="https://github.com/NexusGK-Softwares-Company/NexusGK_Focus" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a></li>
+                  <li><a href="https://github.com/NexusGK-Softwares-Company/NexusGK_Focus/blob/main/README.md" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Documentation</a></li>
+                  <li><a href="https://github.com/NexusGK-Softwares-Company/NexusGK_Focus/issues" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Report Issue</a></li>
+                  <li><a href="https://github.com/NexusGK-Softwares-Company/NexusGK_Focus/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">MIT License</a></li>
                 </ul>
               </div>
             </div>
 
             {/* Bottom Bar */}
             <div className="pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/60">
-              <p>© 2025 NexusGK. All rights reserved.</p>
+              <p>© {new Date().getFullYear()}.  NexusGK Softwares Company. All rights reserved.</p>
               <div className="flex items-center gap-2">
-                <span>Built with</span>
+                <span>Built with </span>
                 <span className="text-red-400">♥</span>
-                <span>using React, TypeScript & Tailwind CSS</span>
+                <span>NexusGK Softwares Company</span>
               </div>
             </div>
           </div>

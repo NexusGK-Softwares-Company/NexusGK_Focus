@@ -3,6 +3,25 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "description": "Beautiful focus timer with 26 themes, keyboard shortcuts, and analytics",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NexusGK-Softwares-Company/NexusGK_Focus.git"
+  },
+  "keywords": [
+    "pomodoro",
+    "timer",
+    "focus",
+    "productivity",
+    "react",
+    "typescript"
+  ],
+  "author": "NexusGK Softwares Company",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NexusGK-Softwares-Company/NexusGK_Focus/issues"
+  },
+  "homepage": "https://nexusgk-focus.vercel.app",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
