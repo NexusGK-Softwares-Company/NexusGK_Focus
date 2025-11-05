@@ -280,10 +280,46 @@ function App() {
     <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <header className="text-center mb-12">
-          <h1 className="text-5xl font-bold mb-2 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            NexusGK Focus
-          </h1>
+        <header className="text-center mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex gap-2">
+              <button
+                onClick={() => setShowKeyboardShortcuts(true)}
+                className="glass px-4 py-2 rounded-full flex items-center gap-2 hover:bg-white/20 transition-all"
+                title="Keyboard Shortcuts"
+              >
+                <Keyboard size={20} />
+                <span className="hidden sm:inline">Shortcuts</span>
+              </button>
+            </div>
+            
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              NexusGK Focus
+            </h1>
+            
+            <div className="flex gap-2">
+              <ThemeSelector
+                currentTheme={currentTheme}
+                onThemeChange={setCurrentTheme}
+              />
+              <button
+                onClick={() => setShowHistory(true)}
+                className="glass px-4 py-2 rounded-full flex items-center gap-2 hover:bg-white/20 transition-all"
+                title="Session History"
+              >
+                <History size={20} />
+                <span className="hidden sm:inline">History</span>
+              </button>
+              <button
+                onClick={() => setShowSettings(true)}
+                className="glass px-4 py-2 rounded-full flex items-center gap-2 hover:bg-white/20 transition-all"
+                title="Settings"
+              >
+                <SettingsIcon size={20} />
+                <span className="hidden sm:inline">Settings</span>
+              </button>
+            </div>
+          </div>
           <p className="text-white/60">Boost your productivity with the Pomodoro Technique</p>
         </header>
 
@@ -291,41 +327,86 @@ function App() {
         <Stats stats={stats} />
 
         {/* Main Content */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-8">
-          {/* Timer Section */}
-          <div className="space-y-6">
+        <div className="grid lg:grid-cols-3 gap-6 mb-8">
+          {/* Left Column - Timer */}
+          <div className="lg:col-span-2 space-y-6">
             <div className="flex justify-center">
               <ModeSelector currentMode={mode} onModeChange={setMode} />
             </div>
-            <Timer
-              timeLeft={timeLeft}
-              isRunning={isRunning}
-              progress={progress}
-              mode={mode}
-              onStart={start}
-              onPause={pause}
-              onReset={reset}
-            />
-            <FocusSounds />
+            
+            <div className="relative">
+              <Timer
+                timeLeft={timeLeft}
+                isRunning={isRunning}
+                progress={progress}
+                mode={mode}
+                onStart={start}
+                onPause={pause}
+                onReset={reset}
+              />
+              <button
+                onClick={() => setShowFocusMode(true)}
+                className="absolute top-4 right-4 p-2 rounded-full glass hover:bg-white/20 transition-all"
+                title="Focus Mode (F)"
+              >
+                <Maximize2 size={20} />
+              </button>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-6">
+              <FocusSounds />
+              <Goals
+                dailyGoal={dailyGoal}
+                completedToday={todaysPomodoros}
+                currentStreak={streakData.current}
+                longestStreak={streakData.longest}
+                onSetGoal={setDailyGoal}
+              />
+            </div>
           </div>
 
-          {/* Tasks Section */}
-          <div>
+          {/* Right Column - Tasks & Data */}
+          <div className="space-y-6">
             <TaskList
               tasks={tasks}
               onAddTask={handleAddTask}
               onToggleTask={handleToggleTask}
               onDeleteTask={handleDeleteTask}
             />
+            <DataManager
+              onExport={handleExport}
+              onImport={handleImport}
+              onClearData={handleClearData}
+            />
           </div>
         </div>
 
         {/* Footer */}
-        <footer className="text-center text-white/40 text-sm">
+        <footer className="text-center text-white/40 text-sm mt-8">
           <p>Inspired by <a href="https://beefocus.su/pomodoro" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-dark">BeeFocus</a></p>
           <p className="mt-2">Built with React, TypeScript & Tailwind CSS</p>
         </footer>
       </div>
+
+      {/* Modals */}
+      {showSettings && (
+        <Settings
+          settings={settings}
+          onSave={setSettings}
+          onClose={() => setShowSettings(false)}
+        />
+      )}
+      
+      {showHistory && (
+        <SessionHistory
+          sessions={sessions}
+          onClose={() => setShowHistory(false)}
+        />
+      )}
+
+      {showKeyboardShortcuts && (
+        <KeyboardShortcuts onClose={() => setShowKeyboardShortcuts(false)} />
+      )}
     </div>
   );
 }
