@@ -4,24 +4,58 @@ import { ModeSelector } from './components/ModeSelector';
 import { TaskList } from './components/TaskList';
 import { Stats } from './components/Stats';
 import { FocusSounds } from './components/FocusSounds';
+import { Settings, SettingsConfig } from './components/Settings';
+import { ThemeSelector, themes } from './components/ThemeSelector';
+import { SessionHistory } from './components/SessionHistory';
+import { Goals } from './components/Goals';
+import { DataManager } from './components/DataManager';
+import { FocusMode } from './components/FocusMode';
+import { KeyboardShortcuts } from './components/KeyboardShortcuts';
 import { useTimer } from './hooks/useTimer';
 import { useLocalStorage } from './hooks/useLocalStorage';
+import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import { TimerMode, Task, Session, Stats as StatsType } from './types';
-import { Settings, Github } from 'lucide-react';
+import { Settings as SettingsIcon, History, Maximize2, Keyboard } from 'lucide-react';
+
+const DEFAULT_SETTINGS: SettingsConfig = {
+  pomodoroDuration: 25,
+  shortBreakDuration: 5,
+  longBreakDuration: 15,
+  autoStartBreaks: false,
+  autoStartPomodoros: false,
+  longBreakInterval: 4,
+  notificationsEnabled: true,
+  soundEnabled: true,
+};
 
 function App() {
   const [mode, setMode] = useState<TimerMode>('pomodoro');
   const [tasks, setTasks] = useLocalStorage<Task[]>('tasks', []);
   const [sessions, setSessions] = useLocalStorage<Session[]>('sessions', []);
+  const [settings, setSettings] = useLocalStorage<SettingsConfig>('settings', DEFAULT_SETTINGS);
+  const [currentTheme, setCurrentTheme] = useLocalStorage<string>('theme', 'sunset');
+  const [dailyGoal, setDailyGoal] = useLocalStorage<number>('dailyGoal', 8);
+  const [streakData, setStreakData] = useLocalStorage<{ lastDate: string; current: number; longest: number }>('streakData', {
+    lastDate: '',
+    current: 0,
+    longest: 0,
+  });
+  
   const [pomodoroCount, setPomodoroCount] = useState(0);
+  const [showSettings, setShowSettings] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
+  const [showFocusMode, setShowFocusMode] = useState(false);
+  const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
 
   const handleTimerComplete = () => {
     // Play completion sound
-    const audio = new Audio('https://cdn.pixabay.com/audio/2022/03/15/audio_c610232a3f.mp3');
-    audio.play();
+    if (settings.soundEnabled) {
+      const audio = new Audio('https://cdn.pixabay.com/audio/2022/03/15/audio_c610232a3f.mp3');
+      audio.play();
+    }
 
     // Send notification
-    if ('Notification' in window && Notification.permission === 'granted') {
+    if (settings.notificationsEnabled && 'Notification' in window && Notification.permission === 'granted') {
       new Notification('Timer Complete!', {
         body: mode === 'pomodoro' ? 'Time for a break!' : 'Time to focus!',
         icon: '/vite.svg',
@@ -29,35 +63,115 @@ function App() {
     }
 
     // Save session
+    const duration = mode === 'pomodoro' 
+      ? settings.pomodoroDuration 
+      : mode === 'shortBreak' 
+      ? settings.shortBreakDuration 
+      : settings.longBreakDuration;
+
     const newSession: Session = {
       id: Date.now().toString(),
       mode,
-      duration: mode === 'pomodoro' ? 25 : mode === 'shortBreak' ? 5 : 15,
+      duration,
       completedAt: new Date(),
     };
     setSessions([...sessions, newSession]);
+
+    // Update streak
+    if (mode === 'pomodoro') {
+      updateStreak();
+    }
 
     // Auto-switch modes
     if (mode === 'pomodoro') {
       const newCount = pomodoroCount + 1;
       setPomodoroCount(newCount);
-      setMode(newCount % 4 === 0 ? 'longBreak' : 'shortBreak');
+      const nextMode = newCount % settings.longBreakInterval === 0 ? 'longBreak' : 'shortBreak';
+      setMode(nextMode);
     } else {
       setMode('pomodoro');
     }
   };
 
-  const { timeLeft, isRunning, progress, start, pause, reset } = useTimer(
+  const autoStart = mode === 'pomodoro' 
+    ? settings.autoStartPomodoros 
+    : settings.autoStartBreaks;
+
+  const { timeLeft, isRunning, progress, start, pause, reset, skip } = useTimer(
     mode,
-    handleTimerComplete
+    {
+      pomodoro: settings.pomodoroDuration,
+      shortBreak: settings.shortBreakDuration,
+      longBreak: settings.longBreakDuration,
+    },
+    handleTimerComplete,
+    autoStart
   );
+
+  // Update streak tracking
+  const updateStreak = () => {
+    const today = new Date().toDateString();
+    const lastDate = streakData.lastDate;
+    
+    if (lastDate !== today) {
+      const yesterday = new Date(Date.now() - 86400000).toDateString();
+      const newCurrent = lastDate === yesterday ? streakData.current + 1 : 1;
+      const newLongest = Math.max(newCurrent, streakData.longest);
+      
+      setStreakData({
+        lastDate: today,
+        current: newCurrent,
+        longest: newLongest,
+      });
+    }
+  };
 
   // Request notification permission
   useEffect(() => {
-    if ('Notification' in window && Notification.permission === 'default') {
+    if (settings.notificationsEnabled && 'Notification' in window && Notification.permission === 'default') {
       Notification.requestPermission();
     }
-  }, []);
+  }, [settings.notificationsEnabled]);
+
+  // Apply theme
+  useEffect(() => {
+    const theme = themes.find((t) => t.id === currentTheme) || themes[0];
+    document.body.className = `bg-gradient-to-br ${theme.gradient} text-white min-h-screen`;
+  }, [currentTheme]);
+
+  // Keyboard shortcuts
+  const handleStartPause = () => {
+    if (isRunning) {
+      pause();
+    } else {
+      start();
+    }
+  };
+
+  const handleNextMode = () => {
+    const modes: TimerMode[] = ['pomodoro', 'shortBreak', 'longBreak'];
+    const currentIndex = modes.indexOf(mode);
+    setMode(modes[(currentIndex + 1) % modes.length]);
+  };
+
+  const handleEscapeKey = (e: KeyboardEvent) => {
+    if (e.key === 'Escape' && showFocusMode) {
+      setShowFocusMode(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEscapeKey);
+    return () => window.removeEventListener('keydown', handleEscapeKey);
+  }, [showFocusMode]);
+
+  useKeyboardShortcuts({
+    onStartPause: handleStartPause,
+    onReset: reset,
+    onSkip: skip,
+    onNextMode: handleNextMode,
+    onSettings: () => setShowSettings(true),
+  });
 
   // Update document title
   useEffect(() => {
@@ -86,21 +200,81 @@ function App() {
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
+  // Data management
+  const handleExport = () => {
+    const data = {
+      tasks,
+      sessions,
+      settings,
+      dailyGoal,
+      streakData,
+      theme: currentTheme,
+      exportedAt: new Date().toISOString(),
+    };
+    
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `nexusgk-focus-backup-${Date.now()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImport = (dataString: string) => {
+    try {
+      const data = JSON.parse(dataString);
+      if (data.tasks) setTasks(data.tasks);
+      if (data.sessions) setSessions(data.sessions);
+      if (data.settings) setSettings(data.settings);
+      if (data.dailyGoal) setDailyGoal(data.dailyGoal);
+      if (data.streakData) setStreakData(data.streakData);
+      if (data.theme) setCurrentTheme(data.theme);
+      alert('Data imported successfully!');
+    } catch (error) {
+      alert('Failed to import data. Please check the file format.');
+    }
+  };
+
+  const handleClearData = () => {
+    setTasks([]);
+    setSessions([]);
+    setSettings(DEFAULT_SETTINGS);
+    setDailyGoal(8);
+    setStreakData({ lastDate: '', current: 0, longest: 0 });
+    setPomodoroCount(0);
+  };
+
   // Calculate stats
+  const todaysSessions = sessions.filter(
+    (session) =>
+      new Date(session.completedAt).toDateString() === new Date().toDateString()
+  );
+
+  const todaysPomodoros = todaysSessions.filter(s => s.mode === 'pomodoro').length;
+
   const stats: StatsType = {
     totalSessions: sessions.length,
     totalMinutes: sessions.reduce((acc, session) => acc + session.duration, 0),
-    todaySessions: sessions.filter(
-      (session) =>
-        new Date(session.completedAt).toDateString() === new Date().toDateString()
-    ).length,
-    todayMinutes: sessions
-      .filter(
-        (session) =>
-          new Date(session.completedAt).toDateString() === new Date().toDateString()
-      )
-      .reduce((acc, session) => acc + session.duration, 0),
+    todaySessions: todaysSessions.length,
+    todayMinutes: todaysSessions.reduce((acc, session) => acc + session.duration, 0),
   };
+
+  // Focus Mode
+  if (showFocusMode) {
+    return (
+      <FocusMode
+        timeLeft={timeLeft}
+        isRunning={isRunning}
+        mode={mode}
+        onStart={start}
+        onPause={pause}
+        onReset={reset}
+        onSkip={skip}
+        onExit={() => setShowFocusMode(false)}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen p-4 md:p-8">
