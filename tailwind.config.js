@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Noto Serif', 'serif'],
+        serif: ['Noto Serif', 'serif'],
+      },
       colors: {
         primary: {
           DEFAULT: '#FF6B6B',

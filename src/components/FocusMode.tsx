@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Minimize2, Play, Pause, RotateCcw, SkipForward } from 'lucide-react';
 import { TimerMode } from '../types';
 
@@ -23,6 +23,51 @@ export const FocusMode: React.FC<FocusModeProps> = ({
   onSkip,
   onExit,
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Enter fullscreen when component mounts
+    const enterFullscreen = async () => {
+      try {
+        if (containerRef.current) {
+          await containerRef.current.requestFullscreen();
+        }
+      } catch (error) {
+        console.error('Error entering fullscreen:', error);
+      }
+    };
+
+    enterFullscreen();
+
+    // Listen for fullscreen changes (when user presses ESC)
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        onExit();
+      }
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+
+    // Cleanup: exit fullscreen when component unmounts
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
+    };
+  }, [onExit]);
+
+  const handleExit = async () => {
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      }
+      onExit();
+    } catch (error) {
+      console.error('Error exiting fullscreen:', error);
+      onExit();
+    }
+  };
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
@@ -49,13 +94,16 @@ export const FocusMode: React.FC<FocusModeProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center">
+    <div 
+      ref={containerRef}
+      className="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center w-screen h-screen"
+    >
       {/* Background gradient */}
       <div className={`absolute inset-0 bg-gradient-to-br ${getModeGradient()} opacity-50`} />
 
       {/* Exit button */}
       <button
-        onClick={onExit}
+        onClick={handleExit}
         className="absolute top-8 right-8 p-3 rounded-full bg-white/10 hover:bg-white/20 transition-all z-10"
         title="Exit Focus Mode (Esc)"
       >
