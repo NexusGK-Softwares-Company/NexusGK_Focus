@@ -1,11 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { Minimize2, Play, Pause, RotateCcw, SkipForward } from 'lucide-react';
 import { TimerMode } from '../types';
+import { ThemeConfig } from './ThemeSelector';
 
 interface FocusModeProps {
   timeLeft: number;
   isRunning: boolean;
   mode: TimerMode;
+  theme: ThemeConfig;
   onStart: () => void;
   onPause: () => void;
   onReset: () => void;
@@ -17,6 +19,7 @@ export const FocusMode: React.FC<FocusModeProps> = ({
   timeLeft,
   isRunning,
   mode,
+  theme,
   onStart,
   onPause,
   onReset,
@@ -95,24 +98,26 @@ export const FocusMode: React.FC<FocusModeProps> = ({
     }
   };
 
-  const getModeGradient = () => {
-    switch (mode) {
-      case 'pomodoro':
-        return 'from-red-500/20 to-pink-500/20';
-      case 'shortBreak':
-        return 'from-green-500/20 to-teal-500/20';
-      case 'longBreak':
-        return 'from-blue-500/20 to-purple-500/20';
+  const getBackgroundStyle = () => {
+    if (theme.backgroundImage) {
+      return {
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${theme.backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+      };
     }
+    return {};
   };
 
   return (
     <div 
       ref={containerRef}
-      className="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center w-screen h-screen"
+      className={`fixed inset-0 bg-gradient-to-br ${theme.gradient} z-50 flex flex-col items-center justify-center w-screen h-screen`}
+      style={getBackgroundStyle()}
     >
-      {/* Background gradient */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${getModeGradient()} opacity-50`} />
+      {/* Optional overlay for better text visibility */}
+      <div className="absolute inset-0 bg-black/20" />
 
       {/* Exit button */}
       <button
@@ -131,42 +136,45 @@ export const FocusMode: React.FC<FocusModeProps> = ({
           {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
         </div>
 
-        {/* Controls */}
-        <div className="flex items-center justify-center gap-6">
-          {!isRunning ? (
-            <button
-              onClick={onStart}
-              className="w-20 h-20 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-all backdrop-blur-sm"
-              title="Start (Space/K)"
-            >
-              <Play size={32} fill="white" />
-            </button>
-          ) : (
-            <button
-              onClick={onPause}
-              className="w-20 h-20 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-all backdrop-blur-sm"
-              title="Pause (Space/K)"
-            >
-              <Pause size={32} fill="white" />
-            </button>
-          )}
-          
+      {/* Controls */}
+      <div className="flex items-center justify-center gap-6">
+        {!isRunning ? (
           <button
-            onClick={onReset}
-            className="w-16 h-16 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all backdrop-blur-sm"
-            title="Reset (R)"
+            onClick={onStart}
+            className="w-20 h-20 rounded-full flex items-center justify-center transition-all backdrop-blur-sm shadow-2xl"
+            style={{
+              background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})`,
+            }}
+            title="Start (Space/K)"
           >
-            <RotateCcw size={24} />
+            <Play size={32} fill="white" />
           </button>
+        ) : (
+          <button
+            onClick={onPause}
+            className="w-20 h-20 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-all backdrop-blur-sm shadow-2xl"
+            title="Pause (Space/K)"
+          >
+            <Pause size={32} fill="white" />
+          </button>
+        )}
+        
+        <button
+          onClick={onReset}
+          className="w-16 h-16 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all backdrop-blur-sm shadow-xl"
+          title="Reset (R)"
+        >
+          <RotateCcw size={24} />
+        </button>
 
-          <button
-            onClick={onSkip}
-            className="w-16 h-16 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all backdrop-blur-sm"
-            title="Skip (S)"
-          >
-            <SkipForward size={24} />
-          </button>
-        </div>
+        <button
+          onClick={onSkip}
+          className="w-16 h-16 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all backdrop-blur-sm shadow-xl"
+          title="Skip (S)"
+        >
+          <SkipForward size={24} />
+        </button>
+      </div>
 
         {/* Keyboard shortcuts hint */}
         <div className="mt-16 text-sm text-white/40 space-y-2">

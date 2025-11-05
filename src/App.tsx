@@ -137,6 +137,19 @@ function App() {
   useEffect(() => {
     const theme = themes.find((t) => t.id === currentTheme) || themes[0];
     document.body.className = `bg-gradient-to-br ${theme.gradient} text-white min-h-screen`;
+    
+    // Apply background image if theme has one
+    if (theme.backgroundImage) {
+      document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${theme.backgroundImage})`;
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+      document.body.style.backgroundAttachment = 'fixed';
+    } else {
+      document.body.style.backgroundImage = '';
+      document.body.style.backgroundSize = '';
+      document.body.style.backgroundPosition = '';
+      document.body.style.backgroundAttachment = '';
+    }
   }, [currentTheme]);
 
   // Keyboard shortcuts
@@ -249,6 +262,9 @@ function App() {
     todayMinutes: todaysSessions.reduce((acc, session) => acc + session.duration, 0),
   };
 
+  // Get current theme
+  const currentThemeConfig = themes.find((t) => t.id === currentTheme) || themes[0];
+
   // Focus Mode
   if (showFocusMode) {
     return (
@@ -256,6 +272,7 @@ function App() {
         timeLeft={timeLeft}
         isRunning={isRunning}
         mode={mode}
+        theme={currentThemeConfig}
         onStart={start}
         onPause={pause}
         onReset={reset}

@@ -25,7 +25,7 @@ A beautiful and modern Pomodoro timer application inspired by [BeeFocus](https:/
 - 🎵 **Focus Sounds** - Ambient sounds (rain, ocean, wind) with volume control
 - ⌨️ **Keyboard Shortcuts** - Quick controls for maximum efficiency
   - `Space/K`: Start/Pause • `R`: Reset • `S`: Skip • `N`: Next Mode • `Shift+,`: Settings
-- 🎨 **Multiple Themes** - 6 beautiful color themes (Sunset, Ocean, Forest, Rose, Amber, Midnight)
+- 🎨 **Multiple Themes** - 16 beautiful themes with stunning backgrounds and color schemes
 - 💾 **Data Management** - Export, import, and backup all your data
 
 ### Design & UX
