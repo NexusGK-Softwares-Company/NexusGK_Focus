@@ -25,6 +25,12 @@ export const FocusMode: React.FC<FocusModeProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isFullscreenActiveRef = useRef(false);
+  const onExitRef = useRef(onExit);
+
+  // Keep the onExit ref updated
+  useEffect(() => {
+    onExitRef.current = onExit;
+  }, [onExit]);
 
   useEffect(() => {
     // Enter fullscreen when component mounts
@@ -48,7 +54,7 @@ export const FocusMode: React.FC<FocusModeProps> = ({
     const handleFullscreenChange = () => {
       // Only exit if we were previously in fullscreen and now we're not
       if (isFullscreenActiveRef.current && !document.fullscreenElement) {
-        onExit();
+        onExitRef.current();
       }
     };
 
@@ -62,7 +68,7 @@ export const FocusMode: React.FC<FocusModeProps> = ({
         document.exitFullscreen().catch(() => {});
       }
     };
-  }, [onExit]);
+  }, []); // Empty dependency array - only run once on mount
 
   const handleExit = async () => {
     isFullscreenActiveRef.current = false;
