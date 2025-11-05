@@ -337,7 +337,7 @@ function App() {
               </button>
             </div>
           </div>
-          <p className="text-white/60">Boost your productivity with the Pomodoro Technique</p>
+          <p className="text-white/60">Boost your productivity with the NexFocus Technique</p>
         </header>
 
         {/* Stats */}

@@ -45,7 +45,7 @@ export const Settings: React.FC<SettingsProps> = ({ settings, onSave, onClose })
             <h3 className="text-xl font-semibold mb-4 text-primary">Timer (minutes)</h3>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <label>Pomodoro</label>
+                <label>NexFocus</label>
                 <input
                   type="number"
                   min="1"
@@ -130,7 +130,7 @@ export const Settings: React.FC<SettingsProps> = ({ settings, onSave, onClose })
                 />
               </label>
               <label className="flex items-center justify-between cursor-pointer">
-                <span>Auto-start Pomodoros</span>
+                <span>Auto-start NexFocus</span>
                 <input
                   type="checkbox"
                   checked={localSettings.autoStartPomodoros}

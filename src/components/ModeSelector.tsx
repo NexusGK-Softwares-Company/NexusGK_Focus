@@ -9,7 +9,7 @@ interface ModeSelectorProps {
 
 export const ModeSelector: React.FC<ModeSelectorProps> = ({ currentMode, onModeChange }) => {
   const modes: { mode: TimerMode; label: string; icon: React.ReactNode }[] = [
-    { mode: 'pomodoro', label: 'Pomodoro', icon: <Clock size={18} /> },
+    { mode: 'pomodoro', label: 'NexFocus', icon: <Clock size={18} /> },
     { mode: 'shortBreak', label: 'Short Break', icon: <Coffee size={18} /> },
     { mode: 'longBreak', label: 'Long Break', icon: <Waves size={18} /> },
   ];
