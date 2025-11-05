@@ -25,7 +25,7 @@ A beautiful and modern Pomodoro timer application inspired by [BeeFocus](https:/
 - 🎵 **Focus Sounds** - Ambient sounds (rain, ocean, wind) with volume control
 - ⌨️ **Keyboard Shortcuts** - Quick controls for maximum efficiency
   - `Space/K`: Start/Pause • `R`: Reset • `S`: Skip • `N`: Next Mode • `Shift+,`: Settings
-- 🎨 **Multiple Themes** - 16 beautiful themes with stunning backgrounds and color schemes
+- 🎨 **Multiple Themes** - 26 beautiful themes including coding GIFs, nature scenes, and stunning color schemes
 - 💾 **Data Management** - Export, import, and backup all your data
 
 ### Design & UX
@@ -110,6 +110,17 @@ The Pomodoro Technique is a time management method:
 3. After 4 Pomodoros, take a longer 15-minute break
 
 This app lets you customize these durations in the settings!
+
+## Themes
+
+Choose from 26+ stunning themes including:
+- 🌊 **Nature**: Ocean, Forest, Desert, Tropical, Autumn, Lavender
+- 🌌 **Space**: Cosmic, Aurora, Midnight
+- 💻 **Coding**: Matrix Code, Dark Code, VS Code, Terminal, Cyberpunk, Hacker, Binary Rain, React Blue
+- 🎨 **Aesthetic**: Sunset, Rose, Cherry Blossom, Neon City, Volcano, Monochrome
+- ☕ **Workspace**: Dev Workspace, Coffee & Code
+
+Some themes feature beautiful animated GIFs for an immersive experience!
 
 ## Tech Stack
 

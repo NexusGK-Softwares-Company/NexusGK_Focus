@@ -29,7 +29,8 @@ const DEFAULT_SETTINGS: SettingsConfig = {
 };
 
 function App() {
-  const [mode, setMode] = useState<TimerMode>('pomodoro');
+  // All user data stored in localStorage
+  const [mode, setMode] = useLocalStorage<TimerMode>('currentMode', 'pomodoro');
   const [tasks, setTasks] = useLocalStorage<Task[]>('tasks', []);
   const [sessions, setSessions] = useLocalStorage<Session[]>('sessions', []);
   const [settings, setSettings] = useLocalStorage<SettingsConfig>('settings', DEFAULT_SETTINGS);
@@ -40,8 +41,9 @@ function App() {
     current: 0,
     longest: 0,
   });
+  const [pomodoroCount, setPomodoroCount] = useLocalStorage<number>('pomodoroCount', 0);
   
-  const [pomodoroCount, setPomodoroCount] = useState(0);
+  // UI state (temporary, doesn't need to persist)
   const [showSettings, setShowSettings] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [showFocusMode, setShowFocusMode] = useState(false);
@@ -210,8 +212,11 @@ function App() {
       settings,
       dailyGoal,
       streakData,
+      pomodoroCount,
+      currentMode: mode,
       theme: currentTheme,
       exportedAt: new Date().toISOString(),
+      version: '1.0.0',
     };
     
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -231,10 +236,13 @@ function App() {
       if (data.settings) setSettings(data.settings);
       if (data.dailyGoal) setDailyGoal(data.dailyGoal);
       if (data.streakData) setStreakData(data.streakData);
+      if (data.pomodoroCount !== undefined) setPomodoroCount(data.pomodoroCount);
+      if (data.currentMode) setMode(data.currentMode);
       if (data.theme) setCurrentTheme(data.theme);
       alert('Data imported successfully!');
     } catch (error) {
       alert('Failed to import data. Please check the file format.');
+      console.error('Import error:', error);
     }
   };
 
@@ -245,6 +253,9 @@ function App() {
     setDailyGoal(8);
     setStreakData({ lastDate: '', current: 0, longest: 0 });
     setPomodoroCount(0);
+    setMode('pomodoro');
+    setCurrentTheme('sunset');
+    alert('All data cleared successfully!');
   };
 
   // Calculate stats
